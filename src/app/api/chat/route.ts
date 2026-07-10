@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-// التعديل هنا: استخدام الاسم الصحيح للمكتبة
+// تأكد تماماً أن هذا هو سطر الاستيراد الوحيد الخاص بجوجل
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // التعديل هنا: استخدام الاسم الصحيح للكلاس
