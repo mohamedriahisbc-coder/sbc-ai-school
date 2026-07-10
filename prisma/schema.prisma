@@ -1,0 +1,42 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  // هذه الخاصية لتمكين Prisma من دعم ميزات الذكاء الاصطناعي وقواعد البيانات الموجهة مستقبلاً
+  previewFeatures = ["postgresqlExtensions"] 
+}
+
+// 1. جدول الفهرس (هذا المسؤول عن إظهار المنهج كاملاً للطالب بدون أي نقص)
+model Lesson {
+  id          String   @id @default(uuid())
+  stage       String   // المرحلة (الابتدائية، المتوسطة...)
+  grade       String   // الصف (الأول، الثاني...)
+  term        String   // الفصل الدراسي (الأول، الثاني...)
+  subject     String   // المادة (لغتي، رياضيات...)
+  lessonOrder Int      // ترتيب الدرس (1، 2، 3...) لضمان التسلسل الصحيح
+  title       String   // اسم الدرس (مثلاً: حرف الألف)
+  
+  // ربط الدرس بمحتوى الذكاء الاصطناعي (علاقة 1 إلى 1)
+  aiContent   AiContent? 
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // منع تكرار نفس الدرس في نفس المادة والصف
+  @@unique([grade, subject, term, lessonOrder]) 
+}
+
+// 2. جدول محتوى الذكاء الاصطناعي (قاعدة البيانات المتخفية التي تستخدم للتلخيص)
+model AiContent {
+  id          String   @id @default(uuid())
+  lessonId    String   @unique
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  
+  rawText     String   // النص الصافي المستخرج من كتاب الـ PDF ليقرأه الـ AI
+  
+  // ملاحظة: عند ربط Supabase سنفعل الـ pgvector هنا لتخزين الـ Embeddings
+  createdAt   DateTime @default(now())
+}
