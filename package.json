@@ -13,6 +13,7 @@
   "dependencies": {
     "@ai-sdk/openai": "^4.0.9",
     "@prisma/client": "^6.19.3",
+    "prisma": "^6.19.3", 
     "ai": "^7.0.18",
     "next": "16.2.10",
     "pdf-parse": "^2.4.5",
