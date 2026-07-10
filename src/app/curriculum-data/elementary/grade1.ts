@@ -1,4 +1,4 @@
-import { Grade } from "../types";
+import { Grade } from "../../types";
 
 export const grade1: Grade = {
   id: "elementary_grade_1",
