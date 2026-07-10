@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { GoogleGenAI } from "@google/generative-ai";
+// التعديل هنا: استخدام الاسم الصحيح للمكتبة
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// الطريقة الرسمية والصحيحة لإنشاء الكلاس في مكتبة جوجل
-const genAI = new GoogleGenAI(process.env.GEMINI_API_KEY || "");
+// التعديل هنا: استخدام الاسم الصحيح للكلاس
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 export async function POST(req: NextRequest) {
   try {
     const { action, lessonId, userMessage } = await req.json();
     
-    // استدعاء الموديل من الـ genAI الـمُعرف بالأعلى
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     // 1. نظام تلخيص الدرس
@@ -31,7 +31,8 @@ export async function POST(req: NextRequest) {
       يجب أن تكون الإجابة بصيغة JSON فقط كصفوف مصفوفة بالشكل التالي تماماً دون أي مقدمات أو نصوص خارج الجييسون:
       [
         {"question": "السؤال الأول؟", "options": ["أ", "ب", "ج", "د"], "correctIndex": 0},
-        ...
+        {"question": "السؤال الثاني؟", "options": ["أ", "ب", "ج", "د"], "correctIndex": 1},
+        {"question": "السؤال الثالث؟", "options": ["أ", "ب", "ج", "د"], "correctIndex": 2}
       ]`;
       const result = await model.generateContent(prompt);
       const cleanJson = result.response.text().replace(/```json|```/g, "").trim();
