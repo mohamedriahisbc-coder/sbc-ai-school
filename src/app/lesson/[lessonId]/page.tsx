@@ -68,28 +68,35 @@ export default function LessonPage() {
 
   return (
     <main className="min-h-screen text-white relative" dir="rtl" style={{ backgroundImage: "url('/images/background.png')", backgroundSize: "cover" }}>
-      <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-[2px]"></div>
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-[0px]"></div>
       
       {/* الهيدر مع زر الرئيسية */}
       <header className="relative z-10 max-w-7xl mx-auto px-6 pt-6 flex justify-between items-center border-b border-white/5 pb-4">
         <a 
-          href="/" 
-          className="px-4 py-1.5 bg-white/10 hover:bg-white/20 rounded-lg text-xs font-bold transition-all border border-white/10 flex items-center gap-2"
-        >
-          🏠 الرئيسية
-        </a>
+  href="/" 
+  className="px-6 py-2.5 bg-white/10 hover:bg-white/20 rounded-xl text-base font-black transition-all border border-white/10 flex items-center gap-2"
+>
+  🏠 الرئيسية
+</a>
         <div className="flex gap-4 items-center">
-          <h1 className="text-sm font-bold text-blue-400">{lessonId} :معرف الدرس</h1>
-          <div className="text-xs font-bold text-blue-300 border-r border-white/10 pr-4">✨ المنظومة التعليمية للذكاء الاصطناعي</div>
-        </div>
+  {/* معرف الدرس باللون الأبيض */}
+  <h1 className="text-lg font-black text-white drop-shadow-md">
+    {lessonId} :معرف الدرس
+  </h1>
+  
+  {/* المنظومة التعليمية باللون الأبيض */}
+  <div className="text-base font-bold text-white border-r border-white/30 pr-4 drop-shadow-md">
+    ✨ المنظومة التعليمية للذكاء الاصطناعي
+  </div>
+</div>
       </header>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* القسم الأيمن (الفيديو) */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="bg-slate-900/50 border border-white/10 rounded-2xl p-4 shadow-2xl">
-            <h3 className="text-sm font-bold mb-3 text-slate-300">📺 فيديو الشرح المعتمد للدرس</h3>
+          <div className="bg-slate-900/90 border border-white/10 rounded-2xl p-4 shadow-2xl">
+            <h3 className="text-xl font-black mb-4 text-white drop-shadow-md">📺 فيديو الشرح المعتمد للدرس</h3>
             <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-white/5">
               <iframe src={defaultVideoUrl} className="absolute top-0 left-0 w-full h-full" allowFullScreen></iframe>
             </div>
@@ -100,9 +107,41 @@ export default function LessonPage() {
         <div className="lg:col-span-5">
            <div className="bg-slate-900/50 border border-white/10 rounded-2xl p-4 min-h-[460px] flex flex-col">
             <div className="flex gap-2 border-b border-white/5 pb-3 mb-4">
-              <button onClick={() => setActiveTab("summary")} className={`px-3 py-1 rounded-lg text-xs ${activeTab === "summary" ? "bg-blue-600" : "bg-white/5"}`}>📝 ملخص</button>
-              <button onClick={() => setActiveTab("ai-ask")} className={`px-3 py-1 rounded-lg text-xs ${activeTab === "ai-ask" ? "bg-purple-600" : "bg-white/5"}`}>🤖 اسأل</button>
-              <button onClick={() => setActiveTab("quizzes")} className={`px-3 py-1 rounded-lg text-xs ${activeTab === "quizzes" ? "bg-amber-600" : "bg-white/5"}`}>📊 اختبار</button>
+              {/* زر ملخص */}
+<button 
+  onClick={() => setActiveTab("summary")} 
+  className={`flex-1 px-6 py-4 rounded-2xl text-lg font-black transition-all duration-300 ${
+    activeTab === "summary" 
+      ? "bg-blue-600 text-white shadow-lg shadow-blue-500/30 scale-[1.02]" 
+      : "bg-white/5 text-white hover:bg-white/10"
+  }`}
+>
+  📝 ملخص
+</button>
+
+{/* زر اسأل */}
+<button 
+  onClick={() => setActiveTab("ai-ask")} 
+  className={`flex-1 px-6 py-4 rounded-2xl text-lg font-black transition-all duration-300 ${
+    activeTab === "ai-ask" 
+      ? "bg-purple-600 text-white shadow-lg shadow-purple-500/30 scale-[1.02]" 
+      : "bg-white/5 text-white hover:bg-white/10"
+  }`}
+>
+  🤖 اسأل
+</button>
+
+{/* زر اختبار */}
+<button 
+  onClick={() => setActiveTab("quizzes")} 
+  className={`flex-1 px-6 py-4 rounded-2xl text-lg font-black transition-all duration-300 ${
+    activeTab === "quizzes" 
+      ? "bg-amber-600 text-white shadow-lg shadow-amber-500/30 scale-[1.02]" 
+      : "bg-white/5 text-white hover:bg-white/10"
+  }`}
+>
+  📊 اختبار
+</button>
             </div>
             
             <div className="flex-1 overflow-y-auto">

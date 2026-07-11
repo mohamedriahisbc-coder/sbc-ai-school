@@ -365,18 +365,18 @@ export default function Home() {
         backgroundAttachment: "fixed",
       }}
     >
-      <div className="absolute inset-0 bg-slate-950/75 backdrop-blur-[2px]"></div>
+      <div className="absolute inset-0 bg-slate-950/30 backdrop-blur-[2px]"></div>
 
       <Navbar />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 pt-36 pb-16">
         
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-blue-400">
-            منصة SBC AI School الذكية
+          <h1 className="text-4xl md:text-5xl font-black text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">
+  منصة SBC AI School الذكية
           </h1>
-          <p className="text-white/80 text-base md:text-lg mt-4 max-w-xl mx-auto font-medium">
-            اختر مسارك التعليمي الآن ودع الذكاء الاصطناعي يقودك نحو التفوق.
+          <p className="text-white text-base md:text-lg mt-4 max-w-xl mx-auto font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,1)]">
+  اختر مسارك التعليمي الآن ودع الذكاء الاصطناعي يقودك نحو التفوق.
           </p>
         </div>
 
@@ -389,16 +389,16 @@ export default function Home() {
             <div className="flex flex-wrap gap-2.5 bg-black/40 p-2 rounded-2xl border border-white/5 w-full lg:w-auto">
               {stages.map((stage) => (
                 <button
-                  key={stage.id}
-                  onClick={() => handleStage(String(stage.id))}
-                  className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center gap-1.5 ${
-                    stageId === String(stage.id)
-                      ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20 scale-[1.02]"
-                      : "text-white/70 hover:text-white hover:bg-white/5"
-                  }`}
-                >
-                  <span>🎓</span> {stage.name}
-                </button>
+  key={stage.id}
+  onClick={() => handleStage(String(stage.id))}
+  className={`px-6 py-3 rounded-2xl font-bold text-lg transition-all duration-300 flex items-center gap-2 ${
+    stageId === String(stage.id)
+      ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20 scale-[1.02]"
+      : "text-white/90 hover:text-white hover:bg-white/10"
+  }`}
+>
+  <span className="text-xl">🎓</span> {stage.name}
+</button>
               ))}
             </div>
           </div>
