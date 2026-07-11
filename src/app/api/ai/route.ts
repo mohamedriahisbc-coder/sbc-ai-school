@@ -9,15 +9,50 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "API Key غير موجود" }, { status: 500 });
     }
 
-    const modelName = "gemini-1.5-flash"; // استخدم الإصدار المعتمد والمتاح حالياً
+    const modelName = "gemini-2.5-flash";
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${process.env.GEMINI_API_KEY}`;
 
     // توجيهات النظام (System Prompts)
     const prompts: Record<string, string> = {
-      summarize: `أنت معلم سعودي خبير. لخص الدرس التالي: (${text}) في نقاط رئيسية مركزة بأسلوب تعليمي مبسط للطلاب.`,
-      ask: `أنت معلم ذكي لمنصة SBC AI School. أجب على سؤال الطالب: "${text}" بأسلوب مبسط ومحفز يناسب المنهج السعودي.`,
-      generate_quiz: `أنشئ 3 أسئلة اختيار من متعدد للدرس: (${text}). أجب بصيغة JSON فقط كصفوف مصفوفة بالشكل التالي تماماً دون أي مقدمات: [{"question": "...", "options": ["أ", "ب", "ج", "د"], "correctIndex": 0}].`
-    };
+  summarize: `
+أنت معلم سعودي خبير.
+
+لخص الدرس التالي في نقاط واضحة وسهلة الفهم للطلاب.
+
+الدرس:
+${text}
+`,
+
+  ask: `
+أنت SBC AI، مساعد ذكي داخل منصة تعليمية.
+
+أجب عن أي سؤال يكتبه المستخدم مهما كان موضوعه.
+
+إذا كان السؤال تعليميًا فاشرحه بطريقة سهلة وواضحة.
+إذا كان السؤال عامًا فأجب بدقة وبأسلوب احترافي.
+إذا طُلب منك كتابة كود أو ترجمة أو حل مسألة أو كتابة مقال فقم بذلك.
+
+السؤال:
+${text}
+`,
+
+  generate_quiz: `
+أنشئ 3 أسئلة اختيار من متعدد اعتمادًا على الدرس التالي.
+
+الدرس:
+${text}
+
+أعد النتيجة بصيغة JSON فقط دون أي شرح.
+
+[
+  {
+    "question":"...",
+    "options":["أ","ب","ج","د"],
+    "correctIndex":0
+  }
+]
+`
+};
 
     const finalPrompt = prompts[action];
     if (!finalPrompt) {
@@ -35,9 +70,16 @@ export async function POST(req: NextRequest) {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("API Error:", data);
-      return NextResponse.json({ error: "حدث خطأ أثناء الاتصال بالذكاء الاصطناعي" }, { status: 500 });
-    }
+  console.error("FULL API ERROR:", JSON.stringify(data, null, 2));
+
+  return NextResponse.json(
+    {
+      status: response.status,
+      googleResponse: data,
+    },
+    { status: 500 }
+  );
+}
 
     let output = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
     
