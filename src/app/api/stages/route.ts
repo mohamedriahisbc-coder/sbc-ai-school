@@ -1,38 +1,26 @@
 import { NextResponse } from "next/server";
-import { prisma } from "../../lib/prisma"; 
+import { prisma } from "@/app/lib/prisma";
 
 export async function GET() {
   try {
-    // جلب الشجرة التعليمية كاملة من المراحل وحتى الدروس لكي لا تنقطع البيانات في الواجهة
-    const stages = await prisma.stage.findMany({
+    const stages = await prisma.educationStage.findMany({
       include: {
-        tracks: {
+        grades: {
           include: {
-            grades: {
+            subjects: {
               include: {
-                terms: {
-                  include: {
-                    subjects: {
-                      include: {
-                        units: {
-                          include: {
-                            lessons: true // جلب الدروس بداخل الوحدات
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+                books: true,
+                lessons: true,
+              },
+            },
+          },
+        },
+      },
     });
 
-    return NextResponse.json(stages || []);
+    return NextResponse.json(stages);
   } catch (error) {
-    console.error("Prisma Error:", error);
+    console.error(error);
     return NextResponse.json([]);
   }
 }

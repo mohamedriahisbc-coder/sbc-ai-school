@@ -7,29 +7,31 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const gradeId = Number(id);
-
-    if (isNaN(gradeId)) {
-      return NextResponse.json({ error: "Invalid Grade ID" }, { status: 400 });
-    }
 
     const grade = await prisma.grade.findUnique({
-      where: { id: gradeId },
+      where: { id },
       include: {
-        semesters: {
+        subjects: {
           include: {
-            subjects: true, // جلب المواد التابعة لكل فصل دراسي
+            books: true,
+            lessons: true,
           },
         },
       },
     });
 
     if (!grade) {
-      return NextResponse.json({ error: "Grade not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Grade not found" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json(grade);
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: error.message },
+      { status: 500 }
+    );
   }
 }

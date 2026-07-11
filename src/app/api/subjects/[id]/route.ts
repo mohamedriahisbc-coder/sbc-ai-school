@@ -7,26 +7,14 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const subjectId = Number(id);
 
-    if (isNaN(subjectId)) {
-      return NextResponse.json(
-        { error: "Invalid Subject ID" },
-        { status: 400 }
-      );
-    }
-
-    // جلب المادة متضمنة الأبواب (Chapters) وداخل كل باب الدروس (Lessons) التابعة له
     const subject = await prisma.subject.findUnique({
       where: {
-        id: subjectId,
+        id,
       },
       include: {
-        chapters: {
-          include: {
-            lessons: true,
-          },
-        },
+        books: true,
+        lessons: true,
       },
     });
 

@@ -3,27 +3,22 @@ import { prisma } from "@/app/lib/prisma";
 
 export async function GET(
   req: Request,
-  context: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await context.params;
+    const { id } = await params;
 
-    console.log("DEBUG ID:", id);
-
-    const stage = await prisma.stage.findUnique({
+    const stage = await prisma.educationStage.findUnique({
       where: {
-        id: Number(id),
+        id,
       },
       include: {
         grades: {
           include: {
             subjects: {
               include: {
-                chapters: {
-                  include: {
-                    lessons: true,
-                  },
-                },
+                books: true,
+                lessons: true,
               },
             },
           },
