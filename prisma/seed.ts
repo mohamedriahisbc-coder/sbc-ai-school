@@ -8,13 +8,14 @@ async function main() {
   // 1. تنظيف شامل لقاعدة البيانات لضمان عدم تداخل البيانات القديمة
   
   // 1. تنظيف شامل لقاعدة البيانات (بالترتيب الصحيح لتجنب تعارض العلاقات)
-await prisma.lesson.deleteMany({});
-await prisma.unit.deleteMany({});
-await prisma.subject.deleteMany({});
-await prisma.term.deleteMany({});
-await prisma.grade.deleteMany({});
-await prisma.stage.deleteMany({});
-await prisma.aiContent.deleteMany({}); // تنظيف النماذج الأخرى إن وجدت
+// 1. تنظيف شامل لقاعدة البيانات (بالترتيب الصحيح لتجنب تعارض العلاقات)
+  await prisma.lesson.deleteMany({});
+  // حذفنا سطر prisma.unit.deleteMany({}); لأنه لا يوجد نموذج بهذا الاسم في الـ Schema
+  await prisma.book.deleteMany({}); // تأكد من إضافة هذا السطر لأن لديك نموذج Book
+  await prisma.subject.deleteMany({});
+  await prisma.grade.deleteMany({});
+  await prisma.educationStage.deleteMany({}); // تأكد من استخدام اسم النموذج الصحيح كما في الـ Schema
+  await prisma.aiContent.deleteMany({});
   // ==========================================
   // 1. إنشاء المرحلة الابتدائية وصفوفها
   // ==========================================
