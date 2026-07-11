@@ -1,37 +1,56 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/app/lib/prisma";
+generator client {
+  provider = "prisma-client-js"
+}
 
-export async function GET(
-  req: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
-    const { id } = await params;
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
 
-    const grade = await prisma.grade.findUnique({
-      where: { id },
-      include: {
-        subjects: {
-          include: {
-            books: true,
-            lessons: true,
-          },
-        },
-      },
-    });
+model EducationStage {
+  id     String  @id @default(uuid())
+  name   String
+  grades Grade[]
+}
 
-    if (!grade) {
-      return NextResponse.json(
-        { error: "Grade not found" },
-        { status: 404 }
-      );
-    }
+model Grade {
+  id        String         @id @default(uuid())
+  name      String
+  stageId   String
+  stage     EducationStage @relation(fields: [stageId], references: [id])
+  subjects  Subject[]
+}
 
-    return NextResponse.json(grade);
-  } catch (error: any) {
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
-  }
+model Subject {
+  id      String   @id @default(uuid())
+  name    String
+  gradeId String
+  grade   Grade    @relation(fields: [gradeId], references: [id])
+  books   Book[]
+  lessons Lesson[]
+}
+
+model Book {
+  id         String  @id @default(uuid())
+  title      String
+  term       String
+  fileUrl    String
+  fileSizeMb Float
+  subjectId  String
+  subject    Subject @relation(fields: [subjectId], references: [id])
+}
+
+model Lesson {
+  id        String  @id @default(uuid())
+  title     String
+  term      String
+  subjectId String
+  subject   Subject @relation(fields: [subjectId], references: [id])
+}
+
+model AiContent {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
 }
