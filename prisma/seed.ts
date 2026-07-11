@@ -6,12 +6,15 @@ async function main() {
   console.log('Starting full Saudi Curriculum seed process...');
 
   // 1. تنظيف شامل لقاعدة البيانات لضمان عدم تداخل البيانات القديمة
-  await prisma.book.deleteMany({});
-  await prisma.lesson.deleteMany({});
-  await prisma.subject.deleteMany({});
-  await prisma.grade.deleteMany({});
-  await prisma.educationStage.deleteMany({});
-
+  
+  // 1. تنظيف شامل لقاعدة البيانات (بالترتيب الصحيح لتجنب تعارض العلاقات)
+await prisma.lesson.deleteMany({});
+await prisma.unit.deleteMany({});
+await prisma.subject.deleteMany({});
+await prisma.term.deleteMany({});
+await prisma.grade.deleteMany({});
+await prisma.stage.deleteMany({});
+await prisma.aiContent.deleteMany({}); // تنظيف النماذج الأخرى إن وجدت
   // ==========================================
   // 1. إنشاء المرحلة الابتدائية وصفوفها
   // ==========================================
