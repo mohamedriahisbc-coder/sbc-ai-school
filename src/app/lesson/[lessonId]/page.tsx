@@ -231,18 +231,41 @@ export default function LessonPage() {
   <div className="space-y-3">
 
     <input
-      value={quizInput}
-      onChange={(e) => setQuizInput(e.target.value)}
-      placeholder="اكتب عنوان الدرس (مثال: الكسور)"
-      className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-base"
-    />
+  value={quizInput}
+  onChange={(e) => setQuizInput(e.target.value)}
+  placeholder="اكتب عنوان الدرس (مثال: الكسور)"
+  className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-base outline-none focus:border-amber-500"
+/>
 
-    <button
-      onClick={handleGenerateQuiz}
-      className="w-full bg-amber-600 py-3 rounded-xl text-base font-bold"
-    >
-      توليد اختبار
-    </button>
+<button
+  onClick={handleGenerateQuiz}
+  disabled={loadingQuiz}
+  className="w-full bg-amber-600 hover:bg-amber-700 transition py-4 rounded-xl text-lg font-bold disabled:opacity-50"
+>
+  {loadingQuiz
+    ? "🧠 يقوم الذكاء الاصطناعي بتوليد الاختبار..."
+    : "📊 توليد اختبار"}
+</button>
+
+{loadingQuiz && (
+  <div className="bg-slate-800 border border-white/10 rounded-2xl p-6 mt-4 text-center animate-pulse">
+
+    <div className="text-5xl mb-4">🤖</div>
+
+    <h3 className="text-xl font-bold text-amber-400">
+      SBC AI يعمل...
+    </h3>
+
+    <p className="mt-3 text-base text-gray-300">
+      يقوم الذكاء الاصطناعي بتحليل عنوان الدرس
+    </p>
+
+    <p className="text-base text-gray-300">
+      وإنشاء أسئلة مناسبة للطالب...
+    </p>
+
+  </div>
+)}
 
     {quiz.map((q, i) => (
       <div
